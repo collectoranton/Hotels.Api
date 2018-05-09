@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "8ff93edc-6f62-4477-abaa-8f9a230a420a",
+		"name": "Hotel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get regions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7088548f-fb1f-4f7e-a03d-c653e00f6778",
+						"type": "text/javascript",
+						"exec": [
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3361/api/regions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3361",
+					"path": [
+						"api",
+						"regions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reseed",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3361/api/regions/reseed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3361",
+					"path": [
+						"api",
+						"regions",
+						"reseed"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0377e69c-43f0-4530-a49a-37a12a1293da",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "4765da98-6470-4774-9e1b-cf780d5aa7ce",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"Status code 200\"] = responseCode.code===200;"
+				]
+			}
+		}
+	]
+}
