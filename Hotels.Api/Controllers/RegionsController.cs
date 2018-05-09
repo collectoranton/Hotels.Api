@@ -1,151 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotels.Api.Controllers
 {
+    [Route("api/regions")]
     public class RegionsController : Controller
     {
-        private readonly HotelsContext _context;
+        private readonly HotelsContext context;
 
         public RegionsController(HotelsContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        // GET: Regions
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Regions.ToListAsync());
-        }
-
-        // GET: Regions/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var region = await _context.Regions
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (region == null)
-            {
-                return NotFound();
-            }
-
-            return View(region);
-        }
-
-        // GET: Regions/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Regions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RegionCode,Name")] Region region)
+        public async Task<IActionResult> Add(Region region)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(region);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(region);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            context.Add(region);
+            await context.SaveChangesAsync();
+            return Ok();
         }
 
-        // GET: Regions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                var region = await context.Regions.SingleOrDefaultAsync(r => r.Id == id);
 
-            var region = await _context.Regions.SingleOrDefaultAsync(m => m.Id == id);
-            if (region == null)
-            {
-                return NotFound();
+                if (region == null)
+                    return NotFound();
+
+                context.Regions.Remove(region);
+                await context.SaveChangesAsync();
+                return Ok();
             }
-            return View(region);
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
-        // POST: Regions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RegionCode,Name")] Region region)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            if (id != region.Id)
-            {
-                return NotFound();
-            }
+            return Ok(await context.Regions.ToListAsync());
+        }
 
-            if (ModelState.IsValid)
+        [HttpPost("reseed")]
+        public  IActionResult Reseed()
+        {
+            try
             {
-                try
-                {
-                    _context.Update(region);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RegionExists(region.Id))
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
+                context.Regions.AddRange(
+                    new Region
                     {
-                        return NotFound();
-                    }
-                    else
+                        Name = "Göteborg Centrum",
+                        RegionCode = 50
+                    },
+                    new Region
                     {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(region);
-        }
+                        Name = "Göteborg Hisingen",
+                        RegionCode = 60
+                    },
+                    new Region
+                    {
+                        Name = "Helsingborg",
+                        RegionCode = 70
+                    });
 
-        // GET: Regions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+                context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
             {
-                return NotFound();
+                return StatusCode(500, e.Message);
             }
-
-            var region = await _context.Regions
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (region == null)
-            {
-                return NotFound();
-            }
-
-            return View(region);
-        }
-
-        // POST: Regions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var region = await _context.Regions.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Regions.Remove(region);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool RegionExists(int id)
-        {
-            return _context.Regions.Any(e => e.Id == id);
         }
     }
 }
