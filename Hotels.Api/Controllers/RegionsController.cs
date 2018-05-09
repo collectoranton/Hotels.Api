@@ -55,7 +55,7 @@ namespace Hotels.Api.Controllers
             return Ok(await context.Regions.ToListAsync());
         }
 
-        [Route("reseed")]
+        [HttpDelete("reseed")]
         public  IActionResult Reseed()
         {
             try
