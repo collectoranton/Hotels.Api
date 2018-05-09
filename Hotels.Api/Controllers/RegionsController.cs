@@ -55,6 +55,24 @@ namespace Hotels.Api.Controllers
             return Ok(await context.Regions.ToListAsync());
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(int id)
+        {
+            try
+            {
+                var region = await context.Regions.SingleOrDefaultAsync(a => a.RegionCode == id);
+                if (region == null)
+                    return NotFound();
+
+                return Ok(region);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         [HttpDelete("reseed")]
         public  IActionResult Reseed()
         {

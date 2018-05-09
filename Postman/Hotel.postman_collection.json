@@ -60,6 +60,28 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GetOne Success",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3361/api/regions/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3361",
+					"path": [
+						"api",
+						"regions",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
