@@ -1,0 +1,53 @@
+{
+	"info": {
+		"_postman_id": "64adeb6a-365b-4fc3-8d95-c421fcadb9f0",
+		"name": "Hotel status BadRequest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Badrequest",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3361/api/regions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3361",
+					"path": [
+						"api",
+						"regions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5c6747b2-6933-4f69-9c34-90c1d407df81",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6b8ab315-e366-4ee7-9c6d-4f6370518d3f",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"Status code 400\"] = responseCode.code===400;",
+					""
+				]
+			}
+		}
+	]
+}

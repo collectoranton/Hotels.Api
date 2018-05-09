@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "8bb7db30-ef83-44aa-9bd8-9e164e4d611c",
+		"name": "Hotel status notfound",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "delete finns inte",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Id",
+							"value": "56",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3361/api/regions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3361",
+					"path": [
+						"api",
+						"regions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9392c281-e5c2-45b1-b847-110cebc2b7ce",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0ba07cb4-f02d-416e-8fd2-61cd1162f454",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"Status code 404\"] = responseCode.code===404;"
+				]
+			}
+		}
+	]
+}
