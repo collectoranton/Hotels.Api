@@ -13,15 +13,9 @@ namespace Hotels.Api.Controllers
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // Om webappen skapar en SamuraiContext så kommer inte detta köras
-                // Detta är default. Körs alltså när du använda Update-Database eller från EfSamurai.App-projektet
-
-                optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = Hotels; Trusted_Connection = True;");
-            }
-
-            optionsBuilder.EnableSensitiveDataLogging();
+            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = Hotels; Trusted_Connection = True;");
+            
+            //optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }
