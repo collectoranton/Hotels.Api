@@ -55,12 +55,13 @@ namespace Hotels.Api.Controllers
             return Ok(await context.Regions.ToListAsync());
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOne(int id)
+        [HttpGet("{regionCode}")]
+        public async Task<IActionResult> GetRegionFromRegionCode(int regionCode)
         {
             try
             {
-                var region = await context.Regions.SingleOrDefaultAsync(a => a.RegionCode == id);
+                var region = await context.Regions.SingleOrDefaultAsync(r => r.RegionCode == regionCode);
+
                 if (region == null)
                     return NotFound();
 
@@ -68,9 +69,15 @@ namespace Hotels.Api.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                throw;
+                return StatusCode(500, e.Message);
             }
+        }
+
+        // TODO: Delete
+        [HttpGet("hello")]
+        public IActionResult GetHello()
+        {
+            return Ok("Hello there, delete me");
         }
 
         [HttpDelete("reseed")]
@@ -103,7 +110,7 @@ namespace Hotels.Api.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, e.Message);
+                return StatusCode(500, "Hello there, " + e.Message);
             }
         }
     }
