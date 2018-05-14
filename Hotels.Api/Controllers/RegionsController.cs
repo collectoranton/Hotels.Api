@@ -87,7 +87,7 @@ namespace Hotels.Api.Controllers
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-
+                
                 context.Regions.AddRange(
                     new Region
                     {
@@ -110,7 +110,7 @@ namespace Hotels.Api.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Hello there, " + e.Message);
+                return StatusCode(500, e.Message);
             }
         }
     }

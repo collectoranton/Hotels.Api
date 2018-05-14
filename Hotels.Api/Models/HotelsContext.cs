@@ -10,6 +10,7 @@ namespace Hotels.Api.Controllers
     public class HotelsContext : DbContext
     {
         public DbSet<Region> Regions { get; set; }
+        public DbSet<Hotel> Hotels { get; set; }
 
         public HotelsContext(DbContextOptions<HotelsContext> context)
             : base (context)

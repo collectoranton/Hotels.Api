@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hotels.Api.Controllers
 {
@@ -9,5 +10,6 @@ namespace Hotels.Api.Controllers
         public int? RegionCode { get; set; }
         [Required]
         public string Name { get; set; }
+        public List<Hotel> Hotels { get; set; }
     }
 }
