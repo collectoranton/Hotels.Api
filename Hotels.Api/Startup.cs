@@ -27,7 +27,7 @@ namespace Hotels.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<HotelsContext>(options =>
-                options.UseSqlServer("Server=tcp:sql-anntonhotels-dev.database.windows.net,1433;Initial Catalog=db-anntonhotels;Persist Security Info=False;User ID=anntonhotels;Password=Login123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
         }
 
