@@ -11,11 +11,16 @@ namespace Hotels.Api.Controllers
     {
         public DbSet<Region> Regions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public HotelsContext(DbContextOptions<HotelsContext> context)
+            : base (context)
         {
-            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = Hotels; Trusted_Connection = True;");
-            
-            //optionsBuilder.EnableSensitiveDataLogging();
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = Hotels; Trusted_Connection = True;");
+            
+        //    //optionsBuilder.EnableSensitiveDataLogging();
+        //}
     }
 }

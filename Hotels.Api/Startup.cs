@@ -30,7 +30,7 @@ namespace Hotels.Api
             //services.AddSingleton<RegionsRepository>();
 
             services.AddDbContext<HotelsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer("Server=tcp:sql-anntonhotels-dev.database.windows.net,1433;Initial Catalog=db-anntonhotels;Persist Security Info=False;User ID=anntonhotels;Password=Login123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddMvc();
         }
 
@@ -42,6 +42,9 @@ namespace Hotels.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+            //app.UseStatusCodePages();
+            //app.UseDirectoryBrowser();
             app.UseMvc();
         }
     }
