@@ -26,9 +26,6 @@ namespace Hotels.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddEntityFrameworkSqlServer().AddDbContext<HotelsContext>();
-            //services.AddSingleton<RegionsRepository>();
-
             services.AddDbContext<HotelsContext>(options =>
                 options.UseSqlServer("Server=tcp:sql-anntonhotels-dev.database.windows.net,1433;Initial Catalog=db-anntonhotels;Persist Security Info=False;User ID=anntonhotels;Password=Login123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddMvc();
@@ -43,8 +40,8 @@ namespace Hotels.Api
             }
 
             app.UseStaticFiles();
-            //app.UseStatusCodePages();
-            //app.UseDirectoryBrowser();
+            app.UseStatusCodePages();
+            app.UseDirectoryBrowser();
             app.UseMvc();
         }
     }
