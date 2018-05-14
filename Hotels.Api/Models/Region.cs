@@ -6,7 +6,7 @@ namespace Hotels.Api.Controllers
     {
         public int Id { get; set; }
         [Required]
-        public int RegionCode { get; set; }
+        public int? RegionCode { get; set; }
         [Required]
         public string Name { get; set; }
     }

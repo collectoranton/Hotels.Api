@@ -8,6 +8,6 @@ namespace Hotels.Api.Controllers
 {
     public class HotelsController
     {
-        
+        // TODO: Use?
     }
 }

@@ -40,7 +40,6 @@ namespace Hotels.Api
             }
 
             app.UseStaticFiles();
-            app.UseStatusCodePages();
             app.UseDirectoryBrowser();
             app.UseMvc();
         }
