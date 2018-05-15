@@ -24,6 +24,11 @@ namespace Hotels.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
+            var region = context.Regions.SingleOrDefault(r => r.RegionCode == hotel.RegionId);
+
+            if (region != null)
+                hotel.Region = region;
+
             context.Add(hotel);
             await context.SaveChangesAsync();
             return Ok();
@@ -52,7 +57,13 @@ namespace Hotels.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await context.Hotels.ToListAsync());
+            var hotels = await context.Hotels
+                .Include(h => h.Region)
+                .ToListAsync();
+
+            hotels.ForEach(h => h.Region.Hotels = null);
+
+            return Ok(hotels);
         }
 
         [HttpGet("{id}")]

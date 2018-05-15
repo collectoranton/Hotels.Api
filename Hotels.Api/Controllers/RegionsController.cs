@@ -52,7 +52,13 @@ namespace Hotels.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await context.Regions.ToListAsync());
+            var regions = await context.Regions
+                .Include(r => r.Hotels)
+                .ToListAsync();
+
+            regions.ForEach(r => r.Hotels.ForEach(h => h.Region = null));
+
+            return Ok(regions);
         }
 
         [HttpGet("{regionCode}")]
