@@ -1,8 +1,7 @@
-﻿namespace Hotels.Api.Controllers
+﻿namespace Hotels.Api.Models
 {
-    public class Hotel
+    public class Hotel : Entity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public Region Region { get; set; }
         public int RegionId { get; set; }

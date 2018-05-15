@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hotels.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,8 @@ namespace Hotels.Api.Controllers
                 return BadRequest();
 
             var region = context.Regions.SingleOrDefault(r => r.RegionCode == hotel.RegionId);
+
+            context.AddRange();
 
             if (region != null)
                 hotel.Region = region;

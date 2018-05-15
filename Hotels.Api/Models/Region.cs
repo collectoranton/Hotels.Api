@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Hotels.Api.Controllers
+namespace Hotels.Api.Models
 {
-    public class Region
+    public class Region : Entity
     {
-        public int Id { get; set; }
         [Required]
         public int? RegionCode { get; set; }
         [Required]
