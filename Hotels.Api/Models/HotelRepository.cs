@@ -1,40 +1,49 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotels.Api.Models
 {
     public class HotelRepository : IRepository<Hotel>
     {
-        private readonly DbContext context;
+        private readonly HotelsContext context;
 
-        public HotelRepository(DbContext context)
+        public HotelRepository(HotelsContext context)
         {
             this.context = context;
         }
 
         public Hotel GetById(int id)
         {
-            throw new System.NotImplementedException();
+            var hotel = context.Hotels.SingleOrDefault(h => h.Id == id);
+
+            return hotel ?? throw new ArgumentException($"No hotel found with id: {id}", nameof(id));
         }
 
-        public IQueryable<Hotel> GetAll()
+        public IQueryable<Hotel> GetAll() => context.Hotels;
+
+        public void Create(Hotel hotel)
         {
-            throw new System.NotImplementedException();
+            if (hotel == null)
+                throw new ArgumentNullException(nameof(hotel));
+
+            context.Add(hotel);
+            context.SaveChanges();
         }
 
-        public void Create()
+        public void Update(Hotel hotel)
         {
-            throw new System.NotImplementedException();
+            if (hotel == null)
+                throw new ArgumentNullException(nameof(hotel));
+
+            context.Update(hotel);
+            context.SaveChanges();
         }
 
-        public void Update()
+        public void DeleteById(int id)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Delete()
-        {
-            throw new System.NotImplementedException();
+            context.Remove(GetById(id));
+            context.SaveChanges();
         }
     }
 }

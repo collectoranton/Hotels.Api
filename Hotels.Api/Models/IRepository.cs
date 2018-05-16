@@ -10,8 +10,8 @@ namespace Hotels.Api.Models
     {
         T GetById(int id);
         IQueryable<T> GetAll();
-        void Create();
-        void Update();
-        void Delete();
+        void Create(T entity);
+        void Update(T entity);
+        void DeleteById(int id);
     }
 }

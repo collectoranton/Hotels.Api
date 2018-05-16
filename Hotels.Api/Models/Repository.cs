@@ -29,17 +29,17 @@ namespace Hotels.Api.Models
             throw new NotImplementedException();
         }
 
-        public void Create()
+        public void Create(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Update()
+        public void Update(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete()
+        public void DeleteById(int id)
         {
             throw new NotImplementedException();
         }
