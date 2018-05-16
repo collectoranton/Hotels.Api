@@ -1,40 +1,47 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Hotels.Api.Models
 {
     public class RegionRepository : IRepository<Region>
     {
-        private readonly DbContext context;
+        private readonly HotelsContext context;
 
-        public RegionRepository(DbContext context)
+        public RegionRepository(HotelsContext context)
         {
             this.context = context;
         }
 
         public Region GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return context.Regions.SingleOrDefault(r => r.Id == id);
         }
 
         public IQueryable<Region> GetAll()
         {
-            throw new System.NotImplementedException();
+            return context.Regions.Include(r => r.Hotels);
         }
 
-        public void Create()
+        public void Create(Region region)
         {
-            throw new System.NotImplementedException();
+            context.Regions.Add(region);
+            context.SaveChanges();
         }
 
-        public void Update()
+        public void Update(Region region)
         {
-            throw new System.NotImplementedException();
+            context.Regions.Update(region);
+            context.SaveChanges();
         }
 
-        public void Delete()
+        public void DeleteById(int id)
         {
-            throw new System.NotImplementedException();
+            var region = context.Regions.SingleOrDefault(r => r.Id == id);
+            if (region != null) context.Regions.Remove(region);
+            context.SaveChanges();
         }
     }
 }
