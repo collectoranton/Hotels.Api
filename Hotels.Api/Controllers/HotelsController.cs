@@ -84,12 +84,25 @@ namespace Hotels.Api.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("scandic")]
         public IActionResult UpdateScandicHotelsFromFile()
         {
             var parser = new FileParser(hotelRepository);
 
             var success = parser.UpdateScandicHotelsFromFile();
+
+            if (success)
+                return Ok();
+
+            return NotFound();
+        }
+
+        [HttpPut("bestwestern")]
+        public IActionResult UpdateBestWesternHotelsFromFile()
+        {
+            var parser = new FileParser(hotelRepository);
+
+            var success = parser.UpdateBestWesternHotelsFromFile();
 
             if (success)
                 return Ok();
@@ -144,7 +157,7 @@ namespace Hotels.Api.Controllers
                     new Hotel
                     {
                         RegionId = 50,
-                        Name = "Tidaholms Hotel",
+                        Name = "Tidbloms Hotel",
                         Vacancies = 200
                     },
                     new Hotel
