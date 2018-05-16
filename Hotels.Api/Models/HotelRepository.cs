@@ -20,6 +20,13 @@ namespace Hotels.Api.Models
             return hotel ?? throw new ArgumentException($"No hotel found with id: {id}", nameof(id));
         }
 
+        public Hotel GetByName(string name)
+        {
+            var hotel = context.Hotels.SingleOrDefault(h => h.Name == name);
+
+            return hotel ?? throw new ArgumentException($"No hotel found with name: {name}", nameof(name));
+        }
+
         public IQueryable<Hotel> GetAll() => context.Hotels;
 
         public void Create(Hotel hotel)

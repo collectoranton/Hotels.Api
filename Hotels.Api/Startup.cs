@@ -28,6 +28,7 @@ namespace Hotels.Api
         {
             services.AddDbContext<HotelsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<HotelRepository>();
             services.AddMvc();
         }
 
