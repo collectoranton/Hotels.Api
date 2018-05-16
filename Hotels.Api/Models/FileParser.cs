@@ -31,9 +31,8 @@ namespace Hotels.Api.Models
                     hotelRepository.Update(hotel);
                 }
             }
-            catch (Exception e)
+            catch
             {
-                var poo = e.Message;
                 return false;
             }
 
