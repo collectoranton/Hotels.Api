@@ -22,7 +22,7 @@ namespace Hotels.Api.Models
         {
             try
             {
-                var filePath = GetLatestScandicFilePath();
+                var filePath = GetLatestFilePathThatStartsWith("Scandic");
                 var contents = File.ReadAllLines(filePath);
 
                 foreach (var line in contents)
@@ -44,7 +44,7 @@ namespace Hotels.Api.Models
         {
             try
             {
-                var filePath = GetLatestBestWesternFilePath();
+                var filePath = GetLatestFilePathThatStartsWith("BestWestern");
                 var json = File.ReadAllText(filePath);
                 var jsonHotels = JsonConvert.DeserializeObject<List<JsonHotel>>(json);
 
@@ -70,44 +70,33 @@ namespace Hotels.Api.Models
 
         private Hotel GetScandicHotel(string line)
         {
-            var split = line.Split(",");
-
-            return hotelRepository.GetByName(split[1]);
+            return hotelRepository.GetByName(line.Split(",")[1]);
         }
 
-        private string GetLatestScandicFilePath()
+        private string GetLatestFilePathThatStartsWith(string startsWith)
         {
-            var filePaths = Directory.GetFiles("Import");
-            var scandicFilePaths = filePaths.Where(p => Path.GetFileNameWithoutExtension(p).StartsWith("Scandic")).ToList();
+            var allFilePaths = Directory.GetFiles("Import");
+            var filePaths = GetPathForFilesThatStartWith(startsWith, allFilePaths);
 
-            if (scandicFilePaths.Count == 0)
-                throw new FileNotFoundException("No Scandic file found");
+            if (filePaths.Count == 0)
+                throw new FileNotFoundException($"No file that starts with '{startsWith}' was found");
 
-            var latestFilePath = scandicFilePaths[0];
-
-            foreach (var scandicFilePath in scandicFilePaths)
-            {
-                if (GetDateFromFileName(scandicFilePath) > GetDateFromFileName(latestFilePath))
-                    latestFilePath = scandicFilePath;
-            }
-
-            return latestFilePath;
+            return GetLatestFilePath(filePaths);
         }
 
-        private string GetLatestBestWesternFilePath()
+        private static List<string> GetPathForFilesThatStartWith(string startsWith, IEnumerable<string> allFilePaths)
         {
-            var filePaths = Directory.GetFiles("Import");
-            var bestWesternFilePaths = filePaths.Where(p => Path.GetFileNameWithoutExtension(p).StartsWith("BestWestern")).ToList();
+            return allFilePaths.Where(p => Path.GetFileNameWithoutExtension(p).StartsWith(startsWith)).ToList();
+        }
 
-            if (bestWesternFilePaths.Count == 0)
-                throw new FileNotFoundException("No BestWestern file found");
+        private string GetLatestFilePath(List<string> filePaths)
+        {
+            var latestFilePath = filePaths.First();
 
-            var latestFilePath = bestWesternFilePaths[0];
-
-            foreach (var scandicFilePath in bestWesternFilePaths)
+            foreach (var filePath in filePaths)
             {
-                if (GetDateFromFileName(scandicFilePath) > GetDateFromFileName(latestFilePath))
-                    latestFilePath = scandicFilePath;
+                if (GetDateFromFileName(filePath) > GetDateFromFileName(latestFilePath))
+                    latestFilePath = filePath;
             }
 
             return latestFilePath;
