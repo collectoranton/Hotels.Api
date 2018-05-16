@@ -3,21 +3,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotels.Api.Models
 {
-    public class HotelsRepository : IRepository<Hotel>
+    public class RegionRepository : IRepository<Region>
     {
         private readonly DbContext context;
 
-        public HotelsRepository(DbContext context)
+        public RegionRepository(DbContext context)
         {
             this.context = context;
         }
 
-        public Hotel GetById(int id)
+        public Region GetById(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public IQueryable<Hotel> GetAll()
+        public IQueryable<Region> GetAll()
         {
             throw new System.NotImplementedException();
         }
