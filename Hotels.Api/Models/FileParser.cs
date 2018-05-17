@@ -18,8 +18,10 @@ namespace Hotels.Api.Models
             this.hotelRepository = hotelRepository;
         }
 
-        public bool UpdateScandicHotelsFromFile()
+        public List<Hotel> GetLatestScandicVacanciesFromFile()
         {
+            var list = new List<Hotel>();
+
             try
             {
                 var filePath = GetLatestFilePathThatStartsWith("Scandic");
@@ -29,19 +31,21 @@ namespace Hotels.Api.Models
                 {
                     var hotel = GetScandicHotel(line);
                     SetScandicHotelVacancies(hotel, line);
-                    hotelRepository.Update(hotel);
+                    list.Add(hotel);
                 }
             }
             catch
             {
-                return false;
+                return new List<Hotel>();
             }
 
-            return true;
+            return list;
         }
 
-        public bool UpdateBestWesternHotelsFromFile()
+        public List<Hotel> GetLatestBestWesternVacanciesFromFile()
         {
+            var list = new List<Hotel>();
+
             try
             {
                 var filePath = GetLatestFilePathThatStartsWith("BestWestern");
@@ -52,15 +56,15 @@ namespace Hotels.Api.Models
                 {
                     var hotel = hotelRepository.GetByName(jsonHotel.Name);
                     hotel.Vacancies = jsonHotel.LedigaRum;
-                    hotelRepository.Update(hotel);
+                    list.Add(hotel);
                 }
             }
             catch
             {
-                return false;
+                return new List<Hotel>();
             }
 
-            return true;
+            return list;
         }
 
         private void SetScandicHotelVacancies(Hotel hotel, string line)

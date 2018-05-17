@@ -89,12 +89,19 @@ namespace Hotels.Api.Controllers
         {
             var parser = new FileParser(hotelRepository);
 
-            var success = parser.UpdateScandicHotelsFromFile();
+            try
+            {
+                var hotelVacancies = parser.GetLatestScandicVacanciesFromFile();
 
-            if (success)
-                return Ok();
+                foreach (var hotelVacancy in hotelVacancies)
+                    hotelRepository.Update(hotelVacancy);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Failed getting latest vacancies. " + e.Message);
+            }
 
-            return NotFound();
+            return Ok();
         }
 
         [HttpPut("bestwestern")]
@@ -102,12 +109,19 @@ namespace Hotels.Api.Controllers
         {
             var parser = new FileParser(hotelRepository);
 
-            var success = parser.UpdateBestWesternHotelsFromFile();
+            try
+            {
+                var hotelVacancies = parser.GetLatestBestWesternVacanciesFromFile();
 
-            if (success)
-                return Ok();
+                foreach (var hotelVacancy in hotelVacancies)
+                    hotelRepository.Update(hotelVacancy);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Failed getting latest vacancies. " + e.Message);
+            }
 
-            return NotFound();
+            return Ok();
         }
 
         // TODO: Delete
