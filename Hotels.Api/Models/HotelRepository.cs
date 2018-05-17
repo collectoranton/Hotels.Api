@@ -15,19 +15,19 @@ namespace Hotels.Api.Models
 
         public Hotel GetById(int id)
         {
-            var hotel = context.Hotels.SingleOrDefault(h => h.Id == id);
+            var hotel = context.Hotels.Include(h => h.Region).SingleOrDefault(h => h.Id == id);
 
             return hotel ?? throw new ArgumentException($"No hotel found with id: {id}", nameof(id));
         }
 
         public Hotel GetByName(string name)
         {
-            var hotel = context.Hotels.SingleOrDefault(h => h.Name == name);
+            var hotel = context.Hotels.Include(h => h.Region).SingleOrDefault(h => h.Name == name);
 
             return hotel ?? throw new ArgumentException($"No hotel found with name: {name}", nameof(name));
         }
 
-        public IQueryable<Hotel> GetAll() => context.Hotels;
+        public IQueryable<Hotel> GetAll() => context.Hotels.Include(h => h.Region);
 
         public void Create(Hotel hotel)
         {

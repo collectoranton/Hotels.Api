@@ -22,30 +22,36 @@ namespace Hotels.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Hotel hotel)
+        public IActionResult Add(Hotel hotel)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            SetHotelRegion(hotel);
+            try
+            {
+                SetHotelRegion(hotel);
+                hotelRepository.Create(hotel);
 
-            context.Add(hotel);
-            await context.SaveChangesAsync();
-            return Ok();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {
-                var region = await context.Regions.SingleOrDefaultAsync(r => r.Id == id);
+                var hotel = hotelRepository.GetById(id);
 
-                if (region == null)
+                if (hotel == null)
                     return NotFound();
 
-                context.Regions.Remove(region);
-                await context.SaveChangesAsync();
+                hotelRepository.DeleteById(id);
+
                 return Ok();
             }
             catch (Exception e)
@@ -55,11 +61,18 @@ namespace Hotels.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            var hotels = await context.Hotels
-                .Include(h => h.Region)
-                .ToListAsync();
+            var hotels = new List<Hotel>();
+
+            try
+            {
+                hotels = hotelRepository.GetAll().ToList();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
 
             hotels.ForEach(h => h.Region.Hotels = null);
 
@@ -67,11 +80,11 @@ namespace Hotels.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetHotel(int id)
+        public IActionResult GetHotel(int id)
         {
             try
             {
-                var hotel = await context.Hotels.SingleOrDefaultAsync(h => h.Id == id);
+                var hotel = hotelRepository.GetById(id);
 
                 if (hotel == null)
                     return NotFound();
@@ -95,13 +108,13 @@ namespace Hotels.Api.Controllers
 
                 foreach (var hotelVacancy in hotelVacancies)
                     hotelRepository.Update(hotelVacancy);
+
+                return Ok();
             }
             catch (Exception e)
             {
                 return StatusCode(500, "Failed getting latest vacancies. " + e.Message);
             }
-
-            return Ok();
         }
 
         [HttpPut("bestwestern")]
@@ -115,20 +128,13 @@ namespace Hotels.Api.Controllers
 
                 foreach (var hotelVacancy in hotelVacancies)
                     hotelRepository.Update(hotelVacancy);
+
+                return Ok();
             }
             catch (Exception e)
             {
                 return StatusCode(500, "Failed getting latest vacancies. " + e.Message);
             }
-
-            return Ok();
-        }
-
-        // TODO: Delete
-        [HttpGet("hello")]
-        public IActionResult GetHello()
-        {
-            return Ok("Hello there, delete me");
         }
 
         [HttpDelete("reseed")]
@@ -194,6 +200,7 @@ namespace Hotels.Api.Controllers
             }
         }
 
+        // TODO: Repository
         private void SetHotelRegion(Hotel hotel)
         {
             var region = context.Regions.SingleOrDefault(r => r.RegionCode == hotel.RegionId);
